@@ -1,0 +1,20 @@
+/.bundle
+
+# Ignore the default SQLite database.
+/db/*.sqlite3
+/db/*.sqlite3-journal
+
+# Ignore all logfiles and tempfiles.
+/log/*.log
+/tmp
+/exe
+/.capistrano
+/db/dumps
+/gems
+gems
+gems/
+
+public/ckeditor_assets
+public/system
+
+/db/dumps/
