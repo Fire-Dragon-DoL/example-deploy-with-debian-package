@@ -1,0 +1,65 @@
+/var/log/MYPKGNAME.log {
+  rotate 8
+  weekly
+  minage 7
+  maxage 120
+  maxsize 500M
+  minsize 50M
+  create 0750 mypkgnameweb mypkgname
+  su mypkgnameweb mypkgname
+  compress
+  missingok
+  notifempty
+}
+/var/opt/MYPKGNAME/log/app.log {
+  rotate 8
+  weekly
+  minage 7
+  maxage 120
+  maxsize 500M
+  minsize 50M
+  create 0750 mypkgnameweb mypkgname
+  su mypkgnameweb mypkgname
+  compress
+  missingok
+  notifempty
+}
+/var/opt/MYPKGNAME/log/bullet.log {
+  rotate 8
+  weekly
+  minage 7
+  maxage 120
+  maxsize 500M
+  minsize 50M
+  create 0750 mypkgnameweb mypkgname
+  su mypkgnameweb mypkgname
+  compress
+  missingok
+  notifempty
+}
+/var/opt/MYPKGNAME/log/delayed_job.log {
+  rotate 8
+  weekly
+  minage 7
+  maxage 120
+  maxsize 500M
+  minsize 50M
+  create 0750 mypkgnameweb mypkgname
+  su mypkgnameweb mypkgname
+  compress
+  missingok
+  notifempty
+}
+/var/opt/MYPKGNAME/log/production.log {
+  rotate 8
+  weekly
+  minage 7
+  maxage 120
+  maxsize 500M
+  minsize 50M
+  create 0750 mypkgnameweb mypkgname
+  su mypkgnameweb mypkgname
+  compress
+  missingok
+  notifempty
+}

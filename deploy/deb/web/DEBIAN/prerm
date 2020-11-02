@@ -1,0 +1,11 @@
+#!/bin/bash
+
+if [ ! "$1" = "remove" ]; then
+  exit 0
+fi
+
+echo '[Deploy] Starting prerm script'
+echo '[Deploy] Stopping MYPKGNAME'
+systemctl stop MYPKGNAME.service
+
+exit 0

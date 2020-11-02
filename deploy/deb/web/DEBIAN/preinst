@@ -1,0 +1,14 @@
+#!/bin/bash
+
+echo '[Deploy] Starting preinst script'
+
+if [ "$1" = 'install' ] && [ "$2" = '' ]; then
+  echo '[Deploy] First installation detected, creating first-install'
+  touch '/var/opt/MYPKGNAME/first-install'
+fi
+
+echo '[Deploy] Stopping MYPKGNAME'
+
+systemctl stop MYPKGNAME.service
+
+exit 0

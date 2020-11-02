@@ -1,0 +1,44 @@
+## NON SSL ##
+upstream mypkgname {
+    server 127.0.0.1:3000;
+}
+server {
+    server_name "mypkgname.com";
+
+    root /opt/mypkgname/public;
+    index index.html;
+    client_max_body_size 1000m;
+    sendfile on;
+    tcp_nopush on;
+    tcp_nodelay on;
+
+    location @mypkgname_server {
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header Host $http_host;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+        proxy_redirect off;
+        proxy_connect_timeout       120s;
+        proxy_send_timeout          120s;
+        proxy_read_timeout          120s;
+        send_timeout                120s;
+        proxy_http_version 1.1;
+        proxy_pass http://mypkgname;
+    }
+
+    location = /index.html {
+        return 301 /;
+    }
+
+    location / {
+        expires 30d;
+        etag off;
+        add_header Cache-Control public;
+        try_files $uri @mypkgname_server;
+    }
+
+    listen 80;
+    listen [::]:80;
+}

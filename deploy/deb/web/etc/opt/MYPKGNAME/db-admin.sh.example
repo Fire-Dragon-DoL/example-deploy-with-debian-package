@@ -1,0 +1,5 @@
+#!/bin/bash
+
+DATABASE_USERNAME=dbusername
+DATABASE_NAME=dbname
+DATABASE_PASSWORD=dbpassword

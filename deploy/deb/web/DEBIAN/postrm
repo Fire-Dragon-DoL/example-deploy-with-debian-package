@@ -1,0 +1,18 @@
+#!/bin/bash
+
+if [ ! "$1" = "purge" ]; then
+  exit 0
+fi
+
+echo '[Deploy] Starting postrm script'
+echo '[Deploy] Purging /var/opt/MYPKGNAME'
+rm -rf "/var/opt/MYPKGNAME"
+
+echo '[Deploy] Reloading systemd'
+systemctl daemon-reload
+echo '[Deploy] Reloading nginx'
+systemctl reload nginx.service
+echo '[Deploy] Restarting rsyslog'
+systemctl restart rsyslog.service
+
+exit 0

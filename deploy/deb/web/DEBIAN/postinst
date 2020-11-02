@@ -1,0 +1,72 @@
+#!/bin/bash
+
+if [ ! "$1" = "configure" ]; then
+  exit 0
+fi
+
+echo '[Deploy] Starting postinst script'
+
+set -e
+if ! getent group 'mypkgname'; then
+  echo '[Deploy] Creating mypkgname group'
+  addgroup 'mypkgname'
+fi
+if ! id -u 'mypkgnameweb'; then
+  echo '[Deploy] Creating mypkgnameweb user'
+  adduser \
+    --home /var/opt/mypkgname \
+    --shell /bin/false \
+    --no-create-home \
+    --ingroup 'mypkgname' \
+    --disabled-password \
+    --system \
+    'mypkgnameweb'
+fi
+set +e
+
+echo '[Deploy] Setting permissions for /var/opt/mypkgname'
+setfacl -R -m d:g:mypkgname:rwX /var/opt/mypkgname
+setfacl -R -m g:mypkgname:rwX /var/opt/mypkgname
+setfacl -R -m d:o:rX /var/opt/mypkgname
+setfacl -R -m o:rX /var/opt/mypkgname
+
+echo '[Deploy] Setting permissions for /var/opt/mypkgname/public'
+# setfacl -R -m d:g:www-data:rX /var/opt/mypkgname/public
+# setfacl -R -m g:www-data:rX /var/opt/mypkgname/public
+# setfacl -R -m d:u:www-data:rX /var/opt/mypkgname/public
+# setfacl -R -m u:www-data:rX /var/opt/mypkgname/public
+setfacl -R -m d:o:rX /var/opt/mypkgname
+setfacl -R -m o:rX /var/opt/mypkgname
+
+echo '[Deploy] Setting permissions for /etc/opt/mypkgname'
+setfacl -R -m d:g:mypkgname:rx /etc/opt/mypkgname
+setfacl -R -m g:mypkgname:rx /etc/opt/mypkgname
+
+set -e
+
+chown -R mypkgnameweb:mypkgname /var/opt/mypkgname
+chmod 755 /var/opt
+chmod 775 /var/opt/mypkgname
+chmod 755 /etc/opt
+chmod 755 /etc/opt/mypkgname
+chmod --recursive 775 /var/opt/mypkgname/public
+chmod 755 /opt
+chmod --recursive 755 /opt/mypkgname
+chmod --recursive u+s /var/opt/mypkgname
+chmod --recursive g+s /var/opt/mypkgname
+chmod --recursive o+s /var/opt/mypkgname
+chmod --recursive u+s /etc/opt/mypkgname
+chmod --recursive g+s /etc/opt/mypkgname
+chmod --recursive o+s /etc/opt/mypkgname
+chmod 644 /etc/cron.d/mypkgname-root
+chmod 644 /etc/logrotate.d/mypkgname
+
+# DB updates
+if [ ! -f "/var/opt/mypkgname/first-install" ]; then
+  echo '[Deploy] Running DB operations'
+  /opt/mypkgname/db-install.sh
+fi
+
+set +e
+
+exit 0

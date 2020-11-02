@@ -1,0 +1,27 @@
+[Unit]
+Description=MYPKGNAME
+After=local-fs.target network.target
+
+[Service]
+Type=simple
+User=mypkgnameweb
+Group=mypkgname
+WorkingDirectory=/opt/MYPKGNAME
+Environment=MPN_CONFIG_PATH=/etc/opt/MYPKGNAME/env.sh
+ExecStart=/opt/MYPKGNAME/systemd/web/start.sh
+ExecStop=/opt/MYPKGNAME/systemd/web/stop.sh
+ExecReload=/opt/MYPKGNAME/systemd/web/reload.sh
+ExecRestart=/opt/MYPKGNAME/systemd/web/restart.sh
+LimitNOFILE=65536
+UMask=0002
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=mypkgname
+Restart=always
+RestartSec=25s
+TimeoutStartSec=10s
+TimeoutStopSec=10s
+KillMode=mixed
+
+[Install]
+WantedBy=multi-user.target
